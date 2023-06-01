@@ -1,0 +1,87 @@
+﻿@page "/todo"
+@inject IJSRuntime jsRuntime
+
+
+<head>
+
+	<link rel="stylesheet" href="https://static.likepoems.com/cdn/aplayer/dist/APlayer.min.css">
+	@*<script src="https://static.likepoems.com/cdn/aplayer/dist/APlayer.min.js"></script>
+	<script  src="https://static.likepoems.com/cdn/aplayer/dist/Meting.min.js"></script>*@
+
+
+	<!-- 自定义歌词样式 -->
+	<style>
+		.aplayer-list li, .aplayer-music {
+			text-align: left;
+			color: #666
+		}
+
+		.aplayer-lrc .aplayer-lrc-contents p {
+			font-size: 15px !important;
+			font-weight: bold !important;
+		}
+
+		.aplayer-lrc .aplayer-lrc-contents .aplayer-lrc-current {
+			color: #212121 !important;
+		}
+	</style>
+
+
+</head>
+
+<body>
+    <h3>Music</h3>
+
+    <footer>
+
+        <div class="aplayer"
+             data-id="8268823919"
+             data-server="tencent"
+             data-type="playlist"
+             data-fixed="true"
+             data-autoplay="false"
+             data-list-folded="true"
+             data-mutex="true"
+             data-order="random"
+             data-loop="all"
+             data-volume="0.4"
+             date-preload="auto">
+        </div>
+
+    </footer>
+</body>
+
+<h3>Todo (@todos.Count(todo => !todo.IsDone))</h3>
+
+<ul>
+	@foreach (var todo in todos)
+	{
+		<li>
+			<input type="checkbox" @bind="todo.IsDone" />
+			<input @bind="todo.Title"></input>
+		</li>
+	}
+</ul>
+
+<input placeholder="SomeThing todo" @bind="newTodo" />
+<button @onclick="AddTodo">Add todo</button>
+
+@code {
+	private List<TodoItem> todos = new();
+
+	private string? newTodo;
+
+	private void AddTodo()
+	{
+		todos.Add(new TodoItem() { Title = newTodo, });
+		newTodo = null;
+
+		Run();
+	}
+
+	protected async void Run()
+	{
+		await jsRuntime.InvokeAsync<IJSObjectReference>("import", "https://static.likepoems.com/cdn/aplayer/dist/APlayer.min.js");
+		await jsRuntime.InvokeAsync<IJSObjectReference>("import", "https://static.likepoems.com/cdn/aplayer/dist/Meting.min.js");
+	}
+}
