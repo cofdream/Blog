@@ -6,4 +6,11 @@
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Compile Remove="Data\新文件夹1\**" />
+    <Content Remove="Data\新文件夹1\**" />
+    <EmbeddedResource Remove="Data\新文件夹1\**" />
+    <None Remove="Data\新文件夹1\**" />
+  </ItemGroup>
+
 </Project>
