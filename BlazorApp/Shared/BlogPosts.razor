@@ -1,29 +1,30 @@
 ﻿@using BlazorApp.Data;
-@inject BlazorApp.Service.IBlogService BlogService
-
-@*<h3>BlogPosts</h3>*@
+@inject BlazorApp.Service.BlogService BlogService
 
 
 @foreach (var post in Posts)
 {
-	<div style="margin: 20px;">
+    <div style="margin: 20px;">
 
-		<div>
-			<h3>@post.Title</h3>
-		</div>
+        <div>
+            <h3>@post.Title</h3>
+        </div>
 
-		<div>
-			@post.Description
-		</div>
+        <div>
+            @post.Description
+        </div>
 
-	</div>
+        <div>
+            <a href="/posts/@post.URL">Read more...</a>
+        </div>
+    </div>
 }
 
 @code {
-	public BlogPost[] Posts { get; private set; }
+    public BlogPost[] Posts { get; private set; }
 
-	protected override void OnInitialized()
-	{
-		Posts = BlogService.GetBlogPosts();
-	}
+    protected override void OnInitialized()
+    {
+        Posts = BlogService.GetBlogPosts();
+    }
 }
