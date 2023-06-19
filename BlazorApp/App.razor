@@ -1,12 +1,34 @@
-﻿<Router AppAssembly="@typeof(App).Assembly">
+﻿@using BlazorApp.Data;
+@inject BlazorApp.Service.ThemeService ThemeService;
+
+<PageTitle>前后端学习记录</PageTitle>
+
+<Router AppAssembly="@typeof(App).Assembly">
     <Found Context="routeData">
-        <RouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)" />
+        <RouteView RouteData="@routeData" DefaultLayout="@theme.ThemeType" />
         <FocusOnNavigate RouteData="@routeData" Selector="h1" />
     </Found>
     <NotFound>
         <PageTitle>Not found</PageTitle>
-        <LayoutView Layout="@typeof(MainLayout)">
+        <LayoutView Layout="@theme.ThemeType">
             <p role="alert">Sorry, there's nothing at this address.</p>
         </LayoutView>
     </NotFound>
 </Router>
+
+<footer>
+    <div style=" text-align:center;">
+        <a href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=" target="_blank">您的备案号</a>
+        <a href="https://beian.miit.gov.cn/" target="_blank">赣ICP备2023005815号-1</a>
+    </div>
+</footer>
+
+@code{
+    private Theme theme;
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        theme = ThemeService.GetTheme();
+    }
+}

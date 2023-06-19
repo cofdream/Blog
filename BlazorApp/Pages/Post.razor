@@ -2,21 +2,29 @@
 @using BlazorApp.Data;
 @inject BlazorApp.Service.BlogService BlogService
 
-<h3>@blogPost.Title</h3>
+@if (blogPost == null)
+{
+	<span>Fetching the blog post failed...</span>
+}
+else
+{
+	<h3>@blogPost.Title</h3>
 
-<div>
-    @blogPost.Content
-</div>
+	<div>
+		@blogPost.Content
+	</div>
+}
+
 
 @code {
 
-    private BlogPost blogPost;
+	private BlogPost? blogPost;
 
-    [Parameter]
-    public string Url { get; set; } = string.Empty;
+	[Parameter]
+	public string Url { get; set; } = string.Empty;
 
-    protected override void OnInitialized()
-    {
-        blogPost = BlogService.GetBlogPost(Url);
-    }
+	protected override void OnInitialized()
+	{
+		blogPost = BlogService.GetBlogPost(Url);
+	}
 }

@@ -3,10 +3,10 @@
     public class BlogPost
     {
         public int Id; 
-        public string URL;
-        public string Title;
-        public string Content;
-        public string Description;
-        public DateTime DateTime;
+        public string URL = string.Empty;
+        public string Title = string.Empty;
+		public string Content = string.Empty;
+		public string Description = string.Empty;
+		public DateTime DateTime;
     }
 }
