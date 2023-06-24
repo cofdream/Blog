@@ -1,5 +1,7 @@
+
+
 .page {
-    /*position: ;*/
+    outline: auto;
     display: flex;
     flex-direction: row;
     background: linear-gradient(#e66465, #9198e5);

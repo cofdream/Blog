@@ -1,3 +1,25 @@
+.top-bar {
+    background-color: rgba(0.1,0.1,0.1,0.25);
+    /*background-image: url(images/bei_an.png);*/
+    height: 35px;
+}
+
+.user-name {
+    color: rgba(255,255,255,255);
+    font-size: 20px;
+    margin-left: 30px;
+    float: left;
+}
+
+
+.nav-container {
+    column-gap: 20px;
+    /*column-rule: 4px dotted rgb(79, 185, 227);*/
+    float: right;
+}
+
+
+
 .navbar-toggler {
     background-color: rgba(255, 255, 255, 0.1);
 }
@@ -19,36 +41,37 @@
 }
 
 .nav-item {
-    font-size: 0.9rem;
-    padding-bottom: 0.5rem;
+    /*font-size: 0.9rem;*/
+    /*padding-bottom: 0.5rem;*/
+    float: left;
 }
 
-    .nav-item:first-of-type {
+    /*.nav-item:first-of-type {
         padding-top: 1rem;
     }
 
     .nav-item:last-of-type {
         padding-bottom: 1rem;
-    }
+    }*/
 
     .nav-item ::deep a {
         color: #d7d7d7;
         border-radius: 4px;
-        height: 3rem;
+        height: 1.5rem;
         display: flex;
         align-items: center;
-        line-height: 3rem;
+        line-height: 1.5rem;
     }
 
-.nav-item ::deep a.active {
-    background-color: rgba(255,255,255,0.25);
-    color: white;
-}
+        .nav-item ::deep a.active {
+            background-color: rgba(255,255,255,0.25);
+            /*color: black;*/
+        }
 
-.nav-item ::deep a:hover {
-    background-color: rgba(255,255,255,0.1);
-    color: white;
-}
+        .nav-item ::deep a:hover {
+            background-color: rgba(255,255,255,0.1);
+            /*color: cyan;*/
+        }
 
 @media (min-width: 641px) {
     .navbar-toggler {
@@ -59,4 +82,8 @@
         /* Never collapse the sidebar for wide screens */
         display: block;
     }
+}
+
+.clear {
+    clear: both; /*在chrome中：让第后续块元素新起一行显示*/
 }

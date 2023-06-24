@@ -13,4 +13,8 @@
     <None Remove="Data\新文件夹1\**" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\BlogPosts\" />
+  </ItemGroup>
+
 </Project>
