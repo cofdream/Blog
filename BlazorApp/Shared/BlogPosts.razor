@@ -6,19 +6,22 @@
 
 	@foreach (var post in Posts)
 	{
-		<div class="blog-posts-item">
-			<div>
-				<h3>@post.Title</h3>
-			</div>
+		if (post != null)
+		{
+			<div class="blog-posts-item">
+				<div>
+					<h3>@post.Title</h3>
+				</div>
 
-			<div>
-				@post.Description
-			</div>
+				<div>
+					@post.Description
+				</div>
 
-			<div>
-				<a href="/posts/@post.URL">Read more...</a>
+				<div>
+					<a href="/posts/@post.Url">Read more...</a>
+				</div>
 			</div>
-		</div>
+		}
 	}
 </div>
 

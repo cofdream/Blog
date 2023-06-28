@@ -1,12 +1,4 @@
----
-title: 'Hello Gridea'
-date: 2022-09-01 16:38:04
-tags: [Gridea]
-published: true
-hideInList: true
-feature: /post-images/hello-gridea.png
-isTop: false
----
+
 👏  欢迎使用 **Gridea** ！  
 ✍️  **Gridea** 一个静态博客写作客户端。你可以用它来记录你的生活、心情、知识、笔记、创意... ... 
 

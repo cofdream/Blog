@@ -1,12 +1,17 @@
-﻿namespace BlazorApp.Data
+﻿using YamlDotNet.Serialization;
+
+namespace BlazorApp.Data
 {
-    public class BlogPost
-    {
-        public int Id; 
-        public string URL = string.Empty;
-        public string Title = string.Empty;
-		public string Content = string.Empty;
+	public class BlogPost
+	{
+		//[YamlMember(Alias = "Id")] 
+		//public int Id;
+		public string Url = string.Empty;
+		public string[] Tags = Array.Empty<string>();
+		public string Title = string.Empty;
 		public string Description = string.Empty;
-		public DateTime DateTime;
-    }
+		[YamlIgnore()]
+		public string Content = string.Empty;
+		public DateTime DateTime = DateTime.Now;
+	}
 }
