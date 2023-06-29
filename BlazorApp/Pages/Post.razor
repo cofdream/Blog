@@ -10,8 +10,6 @@
 }
 else
 {
-    <h3>@blogPost.Title</h3>
-
     @if (HasXss)
     {
         @_postHtmlContent.ToString()
