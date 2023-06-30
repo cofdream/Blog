@@ -1,8 +1,7 @@
 ﻿@page "/posts/{url}"
-@using BlazorApp.Data;
+@using BlazorApp.Data
 @inject BlazorApp.Service.BlogService BlogService
 @inject IJSRuntime JsRuntime
-
 
 @if (blogPost == null)
 {
@@ -33,6 +32,8 @@ else
     private MarkupString _postHtmlContent;
 
     private string content;
+
+    private string DoctorWhoLayout;
 
     protected override void OnInitialized()
     {

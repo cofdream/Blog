@@ -5,18 +5,18 @@ namespace BlazorApp.Service
 {
 	public class ThemeService
 	{
-		private Theme[] Themes;
+		private Data.Theme[] Themes;
 
 		public ThemeService()
 		{
-			Themes = new Theme[]
+			Themes = new Data.Theme[]
 			{
-				new Theme(){ ThemeType = typeof(MainLayout)},
-				new Theme(){ ThemeType = typeof(BlogLayout)},
+				new Data.Theme(){ ThemeType = typeof(MainLayout)},
+				new Data.Theme(){ ThemeType = typeof(BlogLayout)},
 			};
 		}
 
-		public Theme GetTheme()
+		public Data.Theme GetTheme()
 		{
 			return Themes[0];
 		}

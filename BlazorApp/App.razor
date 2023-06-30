@@ -1,9 +1,6 @@
 ﻿@using BlazorApp.Data;
 @inject BlazorApp.Service.ThemeService ThemeService;
 
-<PageTitle>前后端学习记录</PageTitle>
-
-
 
 <Router AppAssembly="@typeof(App).Assembly">
     <Found Context="routeData">
@@ -21,7 +18,7 @@
 
 
 @code{
-    private Theme theme;
+    private Data.Theme theme;
 
     protected override void OnInitialized()
     {
