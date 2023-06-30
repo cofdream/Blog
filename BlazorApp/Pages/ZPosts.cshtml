@@ -1,0 +1,49 @@
+﻿@page "/Blog"
+@namespace BlazorApp.Pages
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@model BlazorApp.Pages.ZPostsModel
+
+@{
+    //Layout = "ZGithub";
+    //Layout = "ZNews";
+    Layout = Model.Layout;
+   
+}
+
+
+@using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage
+@inject ProtectedLocalStorage ProtectedLocalStorage
+
+
+<a asp-page-handler="OnClick">
+    @Model.LayoutMode
+    @Model.Index
+    @Model.count
+</a>
+
+
+<script>
+    function addToLocalStorage(key, value) { localStorage[key] = value; }
+    function readToLocalStorage(key) { return localStorage[key]; }
+</script>
+
+
+<h1 id='unity编辑器自定义资源导入'>Unity编辑器自定义资源导入</h1>
+<h3 id='涉及类属性'>涉及类/属性</h3>
+<p><a href='https://docs.unity3d.com/cn/current/ScriptReference/AssetPostprocessor.html'>ScriptedImporter</a></p>
+<blockquote>
+    <p>自定义资源导入器的抽象基类。脚本化导入器是与特定文件扩展名关联的脚本。Unity 的资源管线调用它们来将关联文件的内容转换为资源。</p>
+</blockquote>
+<p><a href='https://docs.unity3d.com/cn/current/ScriptReference/AssetImporters.ScriptedImporterAttribute.html'>ScriptedImporterAttribute</a></p>
+<blockquote>
+    <p>用于向 Unity 的资源导入管线注册派生自 ScriptedImporter 的自定义资源导入器的类属性。使用 ScriptedImporterAttribute 类可向资源管线注册自定义导入器。</p>
+</blockquote>
+<p><a href='https://docs.unity3d.com/cn/current/ScriptReference/AssetDatabase.SetImporterOverride.html'>AssetDatabase.SetImporterOverride<T>(string path) where T : ScriptedImporter</a></p>
+<blockquote>
+    <p>将特定导入器设置为用于资源。</p>
+</blockquote>
+<p><a href='https://docs.unity3d.com/cn/current/ScriptReference/AssetPostprocessor.html'>AssetPostprocessor</a></p>
+<blockquote>
+    <p>在资源导入或重新导入以后由unity调用。主要使用 OnPreprocessAsset() 或者OnPostprocessAllAssets</p>
+</blockquote>
+<p>&nbsp;</p>
