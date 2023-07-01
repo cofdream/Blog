@@ -1,0 +1,53 @@
+﻿@page "/posts2/{url2}"
+@using BlazorApp.Data
+@inject BlazorApp.Service.BlogService BlogService
+@inject IJSRuntime JsRuntime
+
+@if (blogPost == null)
+{
+    <span>Fetching the blog post failed...</span>
+}
+else
+{
+    @if (HasXss)
+    {
+        @_postHtmlContent.ToString()
+    }
+    else
+    {
+        @_postHtmlContent
+    }
+}
+
+
+@code {
+
+    private BlogPost? blogPost;
+
+    [Parameter]
+    public string Url { get; set; } = string.Empty;
+
+    private bool HasXss { get; set; }
+
+    private MarkupString _postHtmlContent;
+
+    private string content;
+
+    private string DoctorWhoLayout;
+
+    protected override void OnInitialized()
+    {
+        blogPost = BlogService.GetBlogPost(Url);
+        if (blogPost == null) return;
+
+        var htmlData = Markdig.Markdown.ToHtml(blogPost.Content);
+
+        if (htmlData.Contains("<script") || htmlData.Contains("<link"))
+        {
+            HasXss = true;
+        }
+        _postHtmlContent = (MarkupString)htmlData;
+
+        content = _postHtmlContent.ToString();
+    }
+}
