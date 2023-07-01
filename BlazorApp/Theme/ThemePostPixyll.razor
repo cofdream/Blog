@@ -1,3 +1,5 @@
+@inherits LayoutComponentBase
+
 <!doctype html>
 <html>
 <head>
@@ -1032,13 +1034,13 @@
         h4 {
             font-size: 1.13rem;
         }
-        /*
+        @*
          Pixyll
          A simple, beautiful theme for Jekyll that emphasizes content rather than aesthetic fluff.
          Best served with BASSCSS (http://jxnblk.github.io/basscss)
-         Crafted with <3 by John Otander (@@4lpine) - ©2015 John Otander MIT License http://opensource.org/licenses/MIT
+         Crafted with <3 by John Otander (@@4lpine) - ©2015 John Otander MIT License http://opensource.org/licenses/MIT>
 
-        */
+         *@
 
         body {
             font-family: "Merriweather", "PT Serif", Georgia, "Times New Roman", "STSong", 'Segoe UI Emoji', Serif;
@@ -1490,7 +1492,7 @@
 <body class='typora-export os-windows'>
     <div class='typora-export-content'>
         <div id='write' class=''>
-            @RenderBody()
+            @Body
         </div>
     </div>
 </body>
