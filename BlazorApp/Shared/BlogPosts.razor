@@ -4,32 +4,41 @@
 
 <div class="blog-posts-items">
 
-	@foreach (var post in Posts)
-	{
-		if (post != null)
-		{
-			<div class="blog-posts-item">
-				<div>
-					<h3>@post.Title</h3>
-				</div>
+    @if (Posts != null)
+    {
+        @foreach (var post in Posts)
+        {
+            if (post != null)
+            {
+                <div class="blog-posts-item">
+                    <div>
+                        <h3>@post.Title</h3>
+                    </div>
 
-				<div>
-					@post.Description
-				</div>
+                    <div>
+                        @post.Description
+                    </div>
 
-				<div>
-					<a href="/posts/@post.Url">Read more...</a>
-				</div>
-			</div>
-		}
-	}
+                    <div>
+                        <a href="/posts/@post.Url">Read more...</a>
+                    </div>
+                </div>
+            }
+        }
+    }
+
 </div>
 
 @code {
-	public BlogPost[] Posts { get; private set; }
+    public BlogPost[] Posts { get; private set; }
 
-	protected override void OnInitialized()
-	{
-		Posts = BlogService.GetBlogPosts();
-	}
+    //protected override void OnInitialized()
+    //{
+    //    Posts = BlogService.GetBlogPosts();
+    //}
+
+    protected override async Task OnInitializedAsync()
+    {
+        Posts = await BlogService.GetBlogPosts2();
+    }
 }

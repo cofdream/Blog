@@ -1,84 +1,113 @@
 ﻿using BlazorApp.Data;
+using BlazorApp.Shared;
 using YamlDotNet.Serialization;
 using YamlDotNet.Serialization.Converters;
 
 namespace BlazorApp.Service
 {
-	public class BlogService
-	{
-		private BlogPost[] _blogPosts = new BlogPost[]
-		{
-			new BlogPost{ Url="1",Title = "No.1 Post Title" , Description = "one blog", Content = "content *test*"},
-			new BlogPost{ Url="2",Title = "No.2 Post Title" , Description = "two blog", Content = "content *test*"},
-			new BlogPost{ Url="3",Title = "No.2 Post Title" , Description = "three blog", Content = "content *test*"},
-		};
+    public class BlogService
+    {
+        private BlogPost[] blogPosts = new BlogPost[0];
 
-		private static string blogPostsPath = $"{Directory.GetCurrentDirectory()}/wwwroot/BlogPosts/";
+        private static string blogPostsPath = $"{Directory.GetCurrentDirectory()}/wwwroot/BlogPosts/";
 
-		public BlogService()
-		{
-			RebuildMeta();
 
-			var deserializer = new DeserializerBuilder()
-				.WithTypeConverter(new DateTimeConverter())
-				.Build();
+        public BlogService()
+        {
+            //RebuildMeta();
 
-			var blogPosts = new List<BlogPost>();
-			var files = Directory.GetFiles(blogPostsPath, "*.md.meta", SearchOption.AllDirectories);
-			foreach (var file in files)
-			{
-				var yaml = File.ReadAllText(file);
+            //var deserializer = new DeserializerBuilder()
+            //    .WithTypeConverter(new DateTimeConverter())
+            //    .Build();
 
-				var blogPost = deserializer.Deserialize<BlogPost>(yaml);
-				blogPost.Content = File.ReadAllText(file.Replace(".meta", string.Empty));
-				blogPosts.Add(blogPost);
-			}
+            //var blogPosts = new List<BlogPost>();
+            //var files = Directory.GetFiles(blogPostsPath, "*.md.meta", SearchOption.AllDirectories);
+            //foreach (var file in files)
+            //{
+            //    var yaml = File.ReadAllText(file);
 
-			_blogPosts = blogPosts.ToArray();
-		}
+            //    var blogPost = deserializer.Deserialize<BlogPost>(yaml);
+            //    blogPost.Content = File.ReadAllText(file.Replace(".meta", string.Empty));
+            //    blogPosts.Add(blogPost);
+            //}
 
-		private void RebuildMeta()
-		{
-			var serializer = new SerializerBuilder()
-				.WithTypeConverter(new DateTimeConverter())
-				.Build();
+            //_blogPosts = blogPosts.ToArray();
+        }
 
-			var files = Directory.GetFiles(blogPostsPath, "*.md", SearchOption.AllDirectories);
-			foreach (var file in files)
-			{
-				if (file.EndsWith("*.meta")) continue;
+        private void RebuildMeta()
+        {
+            var serializer = new SerializerBuilder()
+                .WithTypeConverter(new DateTimeConverter())
+                .Build();
 
-				var fileMeta = file + ".meta";
-				if (File.Exists(fileMeta)) continue;
+            var files = Directory.GetFiles(blogPostsPath, "*.md", SearchOption.AllDirectories);
+            foreach (var file in files)
+            {
+                if (file.EndsWith("*.meta")) continue;
 
-				var blogPost = new BlogPost()
-				{
-					Url = file.Replace(blogPostsPath, string.Empty).Replace("\\", "/").Replace(".md", string.Empty),
-					Title = Path.GetFileNameWithoutExtension(file),
-					Description = File.ReadAllText(file)[0..Math.Clamp(100, 0, fileMeta.Length)],
-				};
+                var fileMeta = file + ".meta";
+                if (File.Exists(fileMeta)) continue;
 
-				var yaml = serializer.Serialize(blogPost);
-				File.WriteAllText($"{blogPostsPath}{blogPost.Url}.md.meta", yaml);
-			}
-		}
+                var blogPost = new BlogPost()
+                {
+                    Url = file.Replace(blogPostsPath, string.Empty).Replace("\\", "/").Replace(".md", string.Empty),
+                    Title = Path.GetFileNameWithoutExtension(file),
+                    Description = File.ReadAllText(file)[0..Math.Clamp(100, 0, fileMeta.Length)],
+                };
 
-		public BlogPost[] GetBlogPosts()
-		{
-			return _blogPosts;
-		}
+                var yaml = serializer.Serialize(blogPost);
+                File.WriteAllText($"{blogPostsPath}{blogPost.Url}.md.meta", yaml);
+            }
+        }
 
-		public BlogPost GetBlogPost(string url)
-		{
-			foreach (var blogPost in _blogPosts)
-			{
-				if (blogPost.Url == url)
-				{
-					return blogPost;
-				}
-			}
+        //public BlogPost[] GetBlogPosts()
+        //{
+        //    return _blogPosts;
+        //}
 
-			return null;
-		}
-	}
+        public BlogPost GetBlogPost(string url)
+        {
+            //foreach (var blogPost in _blogPosts)
+            //{
+            //    if (blogPost.Url == url)
+            //    {
+            //        return blogPost;
+            //    }
+            //}
+
+            return null;
+        }
+
+
+        public async Task<BlogPost[]> GetBlogPosts2()
+        {
+            if (blogPosts.Length == 0)
+            {
+                var files = Directory.GetFiles(blogPostsPath, "*.meta", SearchOption.AllDirectories);
+                var posts = new List<BlogPost>();
+                foreach (var file in files)
+                {
+                    var text = await File.ReadAllTextAsync(file);
+                    try
+                    {
+                        var blogPost = new DeserializerBuilder()
+                        .WithTypeConverter(new DateTimeConverter())
+                        .Build()
+                        .Deserialize<BlogPost>(text);
+                        if (blogPost != null)
+                        {
+                            posts.Add(blogPost);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                    }
+                }
+
+                blogPosts = posts.ToArray();
+            }
+
+            return blogPosts;
+        }
+    }
 }
