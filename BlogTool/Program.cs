@@ -76,7 +76,7 @@ namespace BlogTool
             if (blogPost == null)
             {
                 blogPost = new BlogPost();
-                blogPost.Url = Path.GetFileName(filePath);
+                blogPost.Url = Path.GetFileNameWithoutExtension(filePath);
             }
 
             blogPost.Title = GetHtmlCotent(htmlContent, "<title>", "</title>");
