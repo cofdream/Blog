@@ -30,7 +30,7 @@
 </div>
 
 @code {
-    public BlogPost[] Posts { get; private set; }
+    public List<BlogPost> Posts { get; private set; } = new List<BlogPost>();
 
     //protected override void OnInitialized()
     //{

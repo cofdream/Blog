@@ -7,7 +7,7 @@ namespace BlazorApp.Service
 {
     public class BlogService
     {
-        private BlogPost[] blogPosts = new BlogPost[0];
+        private List<BlogPost> blogPosts = null;
 
         private static string blogPostsPath = $"{Directory.GetCurrentDirectory()}/wwwroot/BlogPosts/";
 
@@ -79,12 +79,12 @@ namespace BlazorApp.Service
         }
 
 
-        public async Task<BlogPost[]> GetBlogPosts2()
+        public async Task<List<BlogPost>> GetBlogPosts2()
         {
-            if (blogPosts.Length == 0)
+            if (blogPosts == null)
             {
                 var files = Directory.GetFiles(blogPostsPath, "*.meta", SearchOption.AllDirectories);
-                var posts = new List<BlogPost>();
+                blogPosts = new List<BlogPost>();
                 foreach (var file in files)
                 {
                     var text = await File.ReadAllTextAsync(file);
@@ -96,15 +96,15 @@ namespace BlazorApp.Service
                         .Deserialize<BlogPost>(text);
                         if (blogPost != null)
                         {
-                            posts.Add(blogPost);
+                            blogPosts.Add(blogPost);
                         }
                     }
                     catch (Exception ex)
                     {
+                        await Console.Out.WriteLineAsync(ex.ToString());
                     }
                 }
 
-                blogPosts = posts.ToArray();
             }
 
             return blogPosts;
