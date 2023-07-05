@@ -1,0 +1,66 @@
+﻿@page "/posts2/{theme}/{url}"
+@using BlazorApp.Data;
+@inject BlazorApp.Service.BlogService BlogService
+@inject IJSRuntime JsRuntime
+
+@*@layout BlazorApp.Theme.ThemePostGithub*@
+<LayoutView Layout=mLayout ChildContent=GetContent></LayoutView>
+
+@if (blogPost == null)
+{
+    <span>Fetching the blog post failed...</span>
+}
+else 
+{
+    @if (HasXss)
+    {
+        @_postHtmlContent.ToString()
+    }
+    else
+    {
+        @_postHtmlContent
+    }
+}
+
+
+@code {
+
+    private BlogPost? blogPost;
+
+    [Parameter]
+    public string Url { get; set; } = string.Empty;
+
+    [Parameter]
+    public string theme { get; set; } = string.Empty;
+
+    public System.Type mLayout => Type.GetType(theme);
+
+    private bool HasXss { get; set; }
+
+    private MarkupString _postHtmlContent;
+
+    private string content;
+
+    private string DoctorWhoLayout;
+
+    protected override void OnInitialized()
+    {
+        blogPost = BlogService.GetBlogPost(Url);
+        if (blogPost == null) return;
+
+        var htmlData = Markdig.Markdown.ToHtml(blogPost.Content);
+
+        if (htmlData.Contains("<script") || htmlData.Contains("<link"))
+        {
+            HasXss = true;
+        }
+        _postHtmlContent = (MarkupString)htmlData;
+
+        content = _postHtmlContent.ToString();
+    }
+
+    private void GetContent(Microsoft.AspNetCore.Components.Rendering.RenderTreeBuilder builder)
+    {
+        builder.AddContent(1, _postHtmlContent);
+    }
+}
