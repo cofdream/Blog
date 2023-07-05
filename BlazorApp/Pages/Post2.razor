@@ -1,16 +1,19 @@
-﻿@page "/posts2/{theme}/{url}"
+﻿@page "/posts2/{url}"
 @using BlazorApp.Data;
 @inject BlazorApp.Service.BlogService BlogService
+@inject BlazorApp.Service.ThemeService ThemeService
 @inject IJSRuntime JsRuntime
 
 @*@layout BlazorApp.Theme.ThemePostGithub*@
 <LayoutView Layout=mLayout ChildContent=GetContent></LayoutView>
 
-@if (blogPost == null)
+<button class="btn btn-primary" @onclick="IncrementCount">Click me</button>
+
+@*@if (blogPost == null)
 {
     <span>Fetching the blog post failed...</span>
 }
-else 
+else
 {
     @if (HasXss)
     {
@@ -21,7 +24,7 @@ else
         @_postHtmlContent
     }
 }
-
+*@
 
 @code {
 
@@ -33,7 +36,7 @@ else
     [Parameter]
     public string theme { get; set; } = string.Empty;
 
-    public System.Type mLayout => Type.GetType(theme);
+    public System.Type mLayout;
 
     private bool HasXss { get; set; }
 
@@ -57,10 +60,22 @@ else
         _postHtmlContent = (MarkupString)htmlData;
 
         content = _postHtmlContent.ToString();
+
+        mLayout = ThemeService.GetPostThemes()[0].ThemeType;
+    }
+    protected override void OnAfterRender(bool firstRender)
+    {
+        base.OnAfterRender(firstRender);
     }
 
     private void GetContent(Microsoft.AspNetCore.Components.Rendering.RenderTreeBuilder builder)
     {
         builder.AddContent(1, _postHtmlContent);
+    }
+
+    private void IncrementCount()
+    {
+        var theme = ThemeService.GetPostThemes();
+        mLayout = theme[Random.Shared.Next(0, theme.Count)].ThemeType;
     }
 }
