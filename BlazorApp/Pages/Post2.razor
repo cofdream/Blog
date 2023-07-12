@@ -9,6 +9,14 @@
 
 <button class="btn btn-primary" @onclick="IncrementCount">Click me</button>
 
+
+<select @onchange="selectedValue">
+    @foreach (var mod in values)
+    {
+        <option value="@mod.Id">@mod.Name</option>
+    }
+</select>
+
 @*@if (blogPost == null)
 {
     <span>Fetching the blog post failed...</span>
@@ -27,6 +35,24 @@ else
 *@
 
 @code {
+    public class Items
+    {
+        public string Name { get; set; }
+        public int Id { get; set; }
+        public Items(string name, int id)
+        {
+            Name = name;
+            Id = id;
+        }
+    }
+
+    public List<Items> values = new List<Items>();
+
+    public string SelectedValue = "";
+    public void selectedValue(ChangeEventArgs selectEvent)
+    {
+        SelectedValue = selectEvent.Value.ToString();
+    }
 
     private BlogPost? blogPost;
 
@@ -48,6 +74,11 @@ else
 
     protected override void OnInitialized()
     {
+        values.Add(new Items("11", 11));
+        values.Add(new Items("222", 22));
+        values.Add(new Items("333", 33));
+
+
         blogPost = BlogService.GetBlogPost(Url);
         if (blogPost == null) return;
 

@@ -1,12 +1,13 @@
 ﻿<div class="top-bar">
 
     <p class="user-name">Cofdream</p>
-@*    <div class="container-fluid">
+@*
+    <div class="container-fluid">
 
         <button title="Navigation menu" class="navbar-toggler" @onclick="ToggleNavMenu">
             <span class="navbar-toggler-icon"></span>
         </button>
-    </div>
+    </div>*@
 
     <div class="nav-container" @onclick="ToggleNavMenu">
 
@@ -22,9 +23,13 @@
             </NavLink>
         </div>
 
+        <div class="nav-item2">
+            <SelectBlogTheme />
+        </div>
     </div>
 
-    <div @onclick="ToggleNavMenu">
+
+   @* <div @onclick="ToggleNavMenu">
 
         <nav class="flex-column">
             <div class="nav-item px-3">

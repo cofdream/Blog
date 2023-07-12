@@ -1,0 +1,40 @@
+﻿@using BlazorApp.Data;
+@inject BlazorApp.Service.BlogService BlogService
+@inject BlazorApp.Service.ThemeService ThemeService
+@inject IJSRuntime JsRuntime
+
+<select @onchange="selectedValue">
+    @foreach (var mod in values)
+    {
+        <option value="@mod.Id">@mod.Name</option>
+    }
+</select>
+
+
+@code {
+    public class Items
+    {
+        public string Name { get; set; }
+        public int Id { get; set; }
+        public Items(string name, int id)
+        {
+            Name = name;
+            Id = id;
+        }
+    }
+
+    public List<Items> values = new List<Items>();
+
+    public string SelectedValue = "";
+    public void selectedValue(ChangeEventArgs selectEvent)
+    {
+        SelectedValue = selectEvent.Value.ToString();
+    }
+
+    protected override void OnInitialized()
+    {
+        values.Add(new Items("11", 11));
+        values.Add(new Items("222", 22));
+        values.Add(new Items("333", 33));
+    }
+}

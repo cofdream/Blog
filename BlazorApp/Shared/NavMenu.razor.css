@@ -1,6 +1,18 @@
 .top-bar {
     background-color: rgba(0.1,0.1,0.1,0.25);
     /*background-image: url(images/bei_an.png);*/
+    /*height: 35px;
+    border-top: 13px;*/
+
+    /*border: 1px solid #ebebeb;*/
+    /*box-shadow: 0 2px 4px 0 rgba(0,0,0,.1);*/
+    border-radius: 2px;
+    /*padding: 14px 16px;*/
+    box-sizing: border-box;
+    /*line-height: 24px;*/
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     height: 35px;
 }
 
@@ -9,13 +21,14 @@
     font-size: 20px;
     margin-left: 30px;
     float: left;
+    text-align: center;
 }
 
 
 .nav-container {
-    column-gap: 20px;
     /*column-rule: 4px dotted rgb(79, 185, 227);*/
     float: right;
+    align-content: center;
 }
 
 
@@ -36,8 +49,22 @@
 .oi {
     width: 2rem;
     font-size: 1.1rem;
-    vertical-align: text-top;
+    /*vertical-align: ;*/
     top: -2px;
+}
+
+.nav-item2 {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    color: rgba(0, 0, 0, 0.85);
+    font-size: 14px;
+    line-height: 1.5715;
+    list-style: none;
+    font-feature-settings: 'tnum';
+    position: relative;
+    display: inline-block;
+    cursor: pointer;
 }
 
 .nav-item {
@@ -60,7 +87,7 @@
         height: 1.5rem;
         display: flex;
         align-items: center;
-        line-height: 1.5rem;
+        /*line-height: 1.5rem;*/
     }
 
         .nav-item ::deep a.active {
@@ -85,5 +112,6 @@
 }
 
 .clear {
+    height: 0px;
     clear: both; /*在chrome中：让第后续块元素新起一行显示*/
 }
