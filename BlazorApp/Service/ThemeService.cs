@@ -10,6 +10,8 @@ namespace BlazorApp.Service
         private ThemeData[] Themes;
         private List<ThemeData> blogPostsThems;
 
+        public int index;
+
         public ThemeService()
         {
             Themes = new Data.ThemeData[]
@@ -35,6 +37,21 @@ namespace BlazorApp.Service
         public List<ThemeData> GetPostThemes()
         {
             return blogPostsThems;
+        }
+
+        public ThemeData GetPostTheme(int index)
+        {
+            if (index <= 0)
+            {
+                index = 0;
+            }
+            else if (index >= blogPostsThems.Count)
+            {
+                index = 0;
+            }
+            
+            this.index = index;
+            return blogPostsThems[index];
         }
     }
 }

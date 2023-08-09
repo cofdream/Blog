@@ -2,7 +2,7 @@
 @inject BlazorApp.Service.BlogService BlogService
 
 
-<div class="blog-posts-items">
+<div class="blog-posts-items container">
 
     @if (Posts != null)
     {
@@ -20,7 +20,7 @@
                     </div>
 
                     <div>
-                        <a href="/posts/@post.Url">Read more...</a>
+                        <a href="/posts2/@post.Url">Read more...</a>
                     </div>
                 </div>
             }

@@ -3,6 +3,7 @@
 @inject BlazorApp.Service.BlogService BlogService
 @inject BlazorApp.Service.ThemeService ThemeService
 @inject IJSRuntime JsRuntime
+@inject NavigationManager NavigationManager
 
 @*@layout BlazorApp.Theme.ThemePostGithub*@
 <LayoutView Layout=mLayout ChildContent=GetContent></LayoutView>
@@ -106,7 +107,7 @@ else
 
     private void IncrementCount()
     {
-        var theme = ThemeService.GetPostThemes();
-        mLayout = theme[Random.Shared.Next(0, theme.Count)].ThemeType;
+        mLayout = ThemeService.GetPostTheme(ThemeService.index + 1).ThemeType;
+        NavigationManager.NavigateTo($"/posts2/{Url}");
     }
 }

@@ -1,0 +1,25 @@
+﻿@page "/local-storage-example"
+@inject IJSRuntime JSRuntime
+
+<h3>Blazor Local Storage Example</h3>
+
+<button @onclick="SaveToLocalStorage">Save to Local Storage</button>
+<button @onclick="ReadFromLocalStorage">Read from Local Storage</button>
+
+<p>@message</p>
+
+@code {
+    private string message = "";
+
+    private async Task SaveToLocalStorage()
+    {
+        await JSRuntime.InvokeVoidAsync("localStorage.setItem", "myKey", "Hello from Blazor!");
+        message = "Data saved to Local Storage.";
+    }
+
+    private async Task ReadFromLocalStorage()
+    {
+        var result = await JSRuntime.InvokeAsync<string>("localStorage.getItem", "myKey");
+        message = "Data read from Local Storage: " + result;
+    }
+}

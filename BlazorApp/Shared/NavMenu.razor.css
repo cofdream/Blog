@@ -1,5 +1,5 @@
 .top-bar {
-    background-color: rgba(0.1,0.1,0.1,0.25);
+    /*background-color: rgba(0.1,0.1,0.1,0.25);*/
     /*background-image: url(images/bei_an.png);*/
     /*height: 35px;
     border-top: 13px;*/
@@ -17,7 +17,7 @@
 }
 
 .user-name {
-    color: rgba(255,255,255,255);
+    /*color: rgba(255,255,255,255);*/
     font-size: 20px;
     margin-left: 30px;
     float: left;
