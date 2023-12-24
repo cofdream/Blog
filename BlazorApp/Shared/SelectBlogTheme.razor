@@ -1,6 +1,7 @@
-﻿@using BlazorApp.Data;
-@inject BlazorApp.Service.BlogService BlogService
-@inject BlazorApp.Service.ThemeService ThemeService
+﻿@using BlazorApp.Service
+@using BlazorApp.Theme.Service
+@inject BlogService BlogService
+@inject ThemeService ThemeService
 @inject IJSRuntime JsRuntime
 
 <select @onchange="selectedValue">

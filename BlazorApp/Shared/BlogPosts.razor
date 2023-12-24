@@ -1,7 +1,9 @@
-﻿@using BlazorApp.Data;
-@inject BlazorApp.Service.BlogService BlogService
+﻿@using BlazorApp.Data
+@using BlazorApp.Service
+@inject BlogService BlogService
 
 
+<b>Blog Posts -Start</b>
 <div class="blog-posts-items container">
 
     @if (Posts != null)
@@ -28,6 +30,7 @@
     }
 
 </div>
+<b>Blog Posts -End</b>
 
 @code {
     public List<BlogPost> Posts { get; private set; } = new List<BlogPost>();
@@ -39,6 +42,6 @@
 
     protected override async Task OnInitializedAsync()
     {
-        Posts = await BlogService.GetBlogPosts2();
+        Posts = await BlogService.GetBlogPosts();
     }
 }

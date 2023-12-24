@@ -1,24 +1,30 @@
 ﻿@page "/posts2/{url}"
-@using BlazorApp.Data;
-@inject BlazorApp.Service.BlogService BlogService
-@inject BlazorApp.Service.ThemeService ThemeService
+@using BlazorApp.Data
+@using BlazorApp.Service
+@using BlazorApp.Theme.Service
+@inject BlogService BlogService
+@inject ThemeService ThemeService
 @inject IJSRuntime JsRuntime
 @inject NavigationManager NavigationManager
 
-@*@layout BlazorApp.Theme.ThemePostGithub*@
-<LayoutView Layout=mLayout ChildContent=GetContent></LayoutView>
+@* @layout mLayout.ToString() *@
+<LayoutView Layout=@mLayout ChildContent=GetContent></LayoutView>
 
-<button class="btn btn-primary" @onclick="IncrementCount">Click me</button>
+<input type="text" @bind="textInput" title="title" />
+<p>You entered: @textInput</p>
 
 
-<select @onchange="selectedValue">
-    @foreach (var mod in values)
+<p>selectId: @selectThemeType</p>
+
+
+<select  @onchange="OnThemeChange">
+    @foreach (var themeData in ThemeService.BlogPostsThemes)
     {
-        <option value="@mod.Id">@mod.Name</option>
+        <option value="@themeData.ThemeType">@themeData.ThemeType</option>
     }
 </select>
 
-@*@if (blogPost == null)
+@if (blogPost == null)
 {
     <span>Fetching the blog post failed...</span>
 }
@@ -33,27 +39,33 @@ else
         @_postHtmlContent
     }
 }
-*@
 
 @code {
-    public class Items
+
+    private ThemeType selectThemeType;
+
+
+    private async Task OnThemeChange(ChangeEventArgs e)
     {
-        public string Name { get; set; }
-        public int Id { get; set; }
-        public Items(string name, int id)
-        {
-            Name = name;
-            Id = id;
-        }
+        var value = e.Value?.ToString();
+        if (value == null)
+            return;
+
+        if (Enum.TryParse<ThemeType>(value, out var result) == false)
+            return;
+
+
+        selectThemeType = result;
+        ThemeService.CurrentTheme = selectThemeType;
+       
+
+        await SaveTheme();
+
+        mLayout = ThemeService.GetPostTheme(selectThemeType).Theme;
+        // 强刷下
+        StateHasChanged();
     }
 
-    public List<Items> values = new List<Items>();
-
-    public string SelectedValue = "";
-    public void selectedValue(ChangeEventArgs selectEvent)
-    {
-        SelectedValue = selectEvent.Value.ToString();
-    }
 
     private BlogPost? blogPost;
 
@@ -63,7 +75,7 @@ else
     [Parameter]
     public string theme { get; set; } = string.Empty;
 
-    public System.Type mLayout;
+    public System.Type mLayout = typeof(object);
 
     private bool HasXss { get; set; }
 
@@ -73,13 +85,11 @@ else
 
     private string DoctorWhoLayout;
 
+    private Type[] types;
+
+
     protected override void OnInitialized()
     {
-        values.Add(new Items("11", 11));
-        values.Add(new Items("222", 22));
-        values.Add(new Items("333", 33));
-
-
         blogPost = BlogService.GetBlogPost(Url);
         if (blogPost == null) return;
 
@@ -93,8 +103,40 @@ else
 
         content = _postHtmlContent.ToString();
 
-        mLayout = ThemeService.GetPostThemes()[0].ThemeType;
+        mLayout = ThemeService.GetPostTheme(ThemeService.CurrentTheme).Theme;
+
+
     }
+    protected override async Task OnInitializedAsync()
+    {
+       
+
+    }
+
+    [JSInvokable]
+    public void InvokeAsync(string type, string key, string value, string url, string storageArea)
+    {
+        // 处理 storage 事件
+        Console.WriteLine($"Storage event: Type={type}, Key={key}, Value={value}, URL={url}, StorageArea={storageArea}");
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        selectThemeType = await ReadTheme();
+
+        try
+        {
+            // 注册事件监听器
+            await JSRuntime.InvokeVoidAsync("window.addEventListener", "storage", DotNetObjectReference.Create(this));
+        }
+        catch (Exception e)
+        {
+
+            Console.WriteLine(e);
+        }
+    }
+
+
     protected override void OnAfterRender(bool firstRender)
     {
         base.OnAfterRender(firstRender);
@@ -105,9 +147,29 @@ else
         builder.AddContent(1, _postHtmlContent);
     }
 
-    private void IncrementCount()
+    [Inject]
+    private IJSRuntime JSRuntime { get; set; }
+
+
+    private const string THEME_KEY = "theme_key";
+
+    private async Task SaveTheme()
     {
-        mLayout = ThemeService.GetPostTheme(ThemeService.index + 1).ThemeType;
-        NavigationManager.NavigateTo($"/posts2/{Url}");
+        await JSRuntime.SetLocalStorage(THEME_KEY, selectThemeType);
     }
+
+    private async ValueTask<ThemeType> ReadTheme()
+    {
+        var result = await JSRuntime.GetLocalStorage(THEME_KEY, selectThemeType.ToString());
+
+        // return (ThemeType)result;
+
+        if (Enum.TryParse(result.ToString(), out ThemeType type) == false)
+        {
+            type = selectThemeType;
+        }
+        return type;
+    }
+
+    public string textInput;
 }

@@ -5,6 +5,10 @@
 
 <button @onclick="SaveToLocalStorage">Save to Local Storage</button>
 <button @onclick="ReadFromLocalStorage">Read from Local Storage</button>
+<br>
+<input type="text" @bind="textInput"  title="title"/>
+<p>You entered: @textInput</p>
+
 
 <p>@message</p>
 
@@ -22,4 +26,6 @@
         var result = await JSRuntime.InvokeAsync<string>("localStorage.getItem", "myKey");
         message = "Data read from Local Storage: " + result;
     }
+
+    public string textInput;
 }

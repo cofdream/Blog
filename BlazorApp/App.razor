@@ -1,27 +1,28 @@
-﻿@using BlazorApp.Data;
-@inject BlazorApp.Service.ThemeService ThemeService;
-
+﻿@using BlazorApp.Theme.Data
+@using BlazorApp.Theme.Service
 
 <Router AppAssembly="@typeof(App).Assembly">
     <Found Context="routeData">
-        <RouteView RouteData="@routeData" DefaultLayout="@theme.ThemeType" />
+        <RouteView RouteData="@routeData" DefaultLayout="@theme" />
         <FocusOnNavigate RouteData="@routeData" Selector="h1" />
     </Found>
     <NotFound>
         <PageTitle>Not found</PageTitle>
-        <LayoutView Layout="@theme.ThemeType">
+        <LayoutView Layout="@theme">
             <p role="alert">Sorry, there's nothing at this address.</p>
         </LayoutView>
     </NotFound>
 </Router>
 
 
-@code{
-    private Data.ThemeData theme;
+@code {
+    private Type theme;
 
     protected override void OnInitialized()
     {
         base.OnInitialized();
-        theme = ThemeService.GetTheme();
+        theme = typeof(MainLayout);//BlogLayout
+
+
     }
 }

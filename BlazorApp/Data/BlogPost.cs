@@ -2,8 +2,8 @@
 
 namespace BlazorApp.Data
 {
-	public class BlogPost
-	{
+    public class BlogPost
+    {
         public string Url = string.Empty;
         public string[] Tags = Array.Empty<string>();
         public string Title = string.Empty;

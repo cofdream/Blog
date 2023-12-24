@@ -7,19 +7,21 @@ namespace BlazorApp.Service
 {
     public class BlogService
     {
-        private List<BlogPost> blogPosts = null;
+        private List<BlogPost> _blogPosts = new List<BlogPost>();
 
-        private static string blogPostsPath = $"{Directory.GetCurrentDirectory()}/wwwroot/BlogPosts/";
+        //private static readonly string blogPostsPath = $"{Directory.GetCurrentDirectory()}/wwwroot/BlogPosts/";
+
+        private static readonly string blogPostsPath = "E:\\Projects\\CSharpProject\\Blog\\BlogPosts";
 
 
         public BlogService()
         {
-           
+
         }
 
         public BlogPost GetBlogPost(string url)
         {
-            foreach (var blogPost in blogPosts)
+            foreach (var blogPost in _blogPosts)
             {
                 if (blogPost.Url == url)
                 {
@@ -27,39 +29,39 @@ namespace BlazorApp.Service
                 }
             }
 
-            return null;
+            return new BlogPost() { Content = "404" };
         }
 
 
-        public async Task<List<BlogPost>> GetBlogPosts2()
+        public async Task<List<BlogPost>> GetBlogPosts()
         {
-            if (blogPosts == null)
+            if (_blogPosts != null && _blogPosts.Count > 0)
             {
-                var files = Directory.GetFiles(blogPostsPath, "*.meta", SearchOption.AllDirectories);
-                blogPosts = new List<BlogPost>();
-                foreach (var file in files)
+                return _blogPosts;
+            }
+            var files = Directory.GetFiles(blogPostsPath, "*.meta", SearchOption.AllDirectories);
+            _blogPosts = new List<BlogPost>();
+            foreach (var file in files)
+            {
+                var text = await File.ReadAllTextAsync(file);
+                try
                 {
-                    var text = await File.ReadAllTextAsync(file);
-                    try
+                    var blogPost = new DeserializerBuilder()
+                    .WithTypeConverter(new DateTimeConverter())
+                    .Build()
+                    .Deserialize<BlogPost>(text);
+                    if (blogPost != null)
                     {
-                        var blogPost = new DeserializerBuilder()
-                        .WithTypeConverter(new DateTimeConverter())
-                        .Build()
-                        .Deserialize<BlogPost>(text);
-                        if (blogPost != null)
-                        {
-                            blogPosts.Add(blogPost);
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        await Console.Out.WriteLineAsync(ex.ToString());
+                        _blogPosts.Add(blogPost);
                     }
                 }
-
+                catch (Exception ex)
+                {
+                    await Console.Out.WriteLineAsync(ex.ToString());
+                }
             }
 
-            return blogPosts;
+            return _blogPosts;
         }
     }
 }

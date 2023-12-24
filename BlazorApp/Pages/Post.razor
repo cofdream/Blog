@@ -1,6 +1,7 @@
 ﻿@page "/posts/{url}"
 @using BlazorApp.Data
-@inject BlazorApp.Service.BlogService BlogService
+@using BlazorApp.Service
+@inject BlogService BlogService
 @inject IJSRuntime JsRuntime
 
 @if (blogPost == null)
