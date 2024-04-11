@@ -1,0 +1,18 @@
+﻿@model Post
+
+
+<h2>@Model.Title</h2>
+
+@if (string.IsNullOrEmpty(Model.Image) == false)
+{
+
+    var imagePath = $"/Image/{Model.Image}";
+
+    <img src="@imagePath" width="800" height="640" />
+}
+
+<p>@Model.Body</p>
+
+<div class="text-center">
+    <h1 class="display-4">Post</h1>
+</div>
