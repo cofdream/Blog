@@ -1,18 +1,19 @@
 ﻿@model IEnumerable<Post>
 
-<h1>Auth Panel</h1>
+@{
 
-<img src="~/content/static/photomode_18122020_204114.png" width="800" height="450"/>
-
+}
+<h2>Admin Panel</h2>
+<a asp-controller="Panel" asp-action="Edit">
+    Add New Post
+</a>
 
 <div>
     <ul>
         @foreach (var post in Model)
         {
             <li>
-                <a asp-controller="Home" asp-action="Post" asp-route-id="@post.Id">
-                    @post.Title
-                </a>
+                @post.Title
                 -
                 <a asp-controller="Panel" asp-action="Edit" asp-route-id="@post.Id">
                     Edit
@@ -24,6 +25,4 @@
             </li>
         }
     </ul>
-
-
 </div>

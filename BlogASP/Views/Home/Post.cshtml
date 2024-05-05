@@ -1,18 +1,26 @@
 ﻿@model Post
 
-
-<h2>@Model.Title</h2>
-
-@if (string.IsNullOrEmpty(Model.Image) == false)
-{
-
-    var imagePath = $"/Image/{Model.Image}";
-
-    <img src="@imagePath" width="800" height="640" />
+@{
+    ViewBag.Title = Model.Title;
+    ViewBag.Description = Model.Description;
+    ViewBag.Keywords = $"{Model.Tags.Replace(',', ' ')} {Model.Category}";
 }
 
-<p>@Model.Body</p>
+<div class="container">
+    <div class="post no-shadow">
 
-<div class="text-center">
-    <h1 class="display-4">Post</h1>
+        @if (!string.IsNullOrEmpty(Model.Image))
+        {
+            var imagePath = $"/Image/{Model.Image}";
+            <img src="@imagePath" />
+
+            <span class="title">@Model.Title</span>
+        }
+
+    </div>
+
+    <div class="post-body">
+        @Html.Raw(Model.Body)
+    </div>
+
 </div>

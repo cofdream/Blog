@@ -4,10 +4,11 @@ namespace BlogASP.Data.Repository
 {
     public interface IRepository
     {
-        Post GetPost(int id);
+        Post GetPost(uint id);
         List<Post> GetAllPostList();
+        List<Post> GetAllPostList(string category);
         void AddPost(Post post);
-        void RemovePost(int id);
+        void RemovePost(uint id);
         void UpdatePost(Post post);
 
         Task<bool> SaveChangesAsync();

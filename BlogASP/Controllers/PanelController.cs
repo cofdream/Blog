@@ -4,7 +4,6 @@ using BlogASP.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace BlogASP.Controllers
 {
@@ -29,7 +28,7 @@ namespace BlogASP.Controllers
 
         public IActionResult Post(int id)
         {
-            var post = repository.GetPost(id);
+            var post = repository.GetPost((uint)id);
             if (post == null)
                 return Error();
 
@@ -41,7 +40,7 @@ namespace BlogASP.Controllers
         {
             if (id != null)
             {
-                var post = repository.GetPost(id.Value);
+                var post = repository.GetPost((uint)id.Value);
                 if (post != null)
                 {
                     return View(new PostViewModel()
@@ -49,7 +48,11 @@ namespace BlogASP.Controllers
                         Id = post.Id,
                         Title = post.Title,
                         Body = post.Body,
+                        CurrentImage = post.Image,
                         //Image = fileManager.ImageStream(post.Image),
+                        Description = post.Description,
+                        Category = post.Category,
+                        Tags = post.Tags,
                     });
                 }
             }
@@ -65,8 +68,20 @@ namespace BlogASP.Controllers
                 Id = postViewModel.Id,
                 Title = postViewModel.Title,
                 Body = postViewModel.Body,
-                Image = await fileManager.SaveImage(postViewModel.Image),
+                Description = postViewModel.Description,
+                Category = postViewModel.Category,
+                Tags = postViewModel.Tags,
             };
+
+            if (postViewModel.Image == null)
+            {
+                post.Image = postViewModel.CurrentImage;
+            }
+            else
+            {
+                post.Image = await fileManager.SaveImage(postViewModel.Image);
+            }
+
 
             if (post.Id > 0)
             {
@@ -90,7 +105,7 @@ namespace BlogASP.Controllers
         [HttpGet]
         public async Task<IActionResult> Remove(int id)
         {
-            repository.RemovePost(id);
+            repository.RemovePost((uint)id);
             await repository.SaveChangesAsync();
             return RedirectToAction("Index");
         }

@@ -24,13 +24,13 @@ namespace BlogASP.Controllers
             this.fileManager = fileManager;
         }
 
-        public IActionResult Index()
+        public IActionResult Index(string category)
         {
-            var posts = repository.GetAllPostList();
+            var posts = string.IsNullOrEmpty(category) ? repository.GetAllPostList() : repository.GetAllPostList(category);
             return View(posts);
         }
 
-        public IActionResult Post(int id)
+        public IActionResult Post(uint id)
         {
             var post = repository.GetPost(id);
             if (post == null)
@@ -39,7 +39,7 @@ namespace BlogASP.Controllers
             return View(post);
         }
 
-      
+
         [HttpGet("/Image/{folder}/{image}")]
         public IActionResult PostImage(string folder, string image)
         {

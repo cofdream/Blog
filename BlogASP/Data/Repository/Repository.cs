@@ -1,6 +1,4 @@
 ﻿using BlogASP.Models;
-using System.Collections;
-using System.ComponentModel;
 
 namespace BlogASP.Data.Repository
 {
@@ -12,20 +10,38 @@ namespace BlogASP.Data.Repository
             _context = context;
         }
 
-        public Post GetPost(int id)
+        public Post GetPost(uint id)
         {
             foreach (var post in _context.Posts)
             {
                 if (post.Id == id)
                     return post;
             }
-            return null;
+            return new Post()
+            {
+                Id = id,
+            };
         }
 
         public List<Post> GetAllPostList()
         {
-            return _context.Posts.ToList();
+            return [.. _context.Posts];
         }
+
+        public List<Post> GetAllPostList(string category)
+        {
+            var result = new List<Post>();
+
+            foreach (var post in _context.Posts)
+            {
+                if (string.Equals(post.Category, category, StringComparison.OrdinalIgnoreCase))
+                {
+                    result.Add(post);
+                }
+            }
+            return result;
+        }
+
 
         public void AddPost(Post post)
         {
@@ -35,7 +51,7 @@ namespace BlogASP.Data.Repository
             _context.Posts.Add(post);
         }
 
-        public void RemovePost(int id)
+        public void RemovePost(uint id)
         {
             var post = GetPost(id);
             if (post == null)

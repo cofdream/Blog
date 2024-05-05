@@ -1,4 +1,4 @@
-html {
+/*html {
     font-size: 14px;
 }
 
@@ -15,11 +15,12 @@ html {
 html {
     position: relative;
     min-height: 100%;
-}
+}*/
 
 body {
     margin: 0;
-    margin-bottom: 60px;
+    /*margin-bottom: 60px;*/
+    background-color: #80dee2;
 }
 
 
@@ -35,18 +36,61 @@ a {
 nav {
     background-color: #142127;
     height: 50px;
-    width = 100%;
+    width: 100%;
     text-align: center;
 }
 
     nav a {
         display: inline-block;
-        hyphens: 100%;
         padding: 15px;
     }
 
 .main-img {
-    background-image: url('../content/static/photomode_18122020_204114.png');
+    position: relative;
+    height: 500px;
+    /*background-image: url('../content/static/photomode_18122020_204114.png');*/
+    background-image: url('../content/static/j_21_large.jpg');
     background-position: center;
     background-size: cover;
+}
+
+.title {
+    position: absolute;
+    color: white;
+    font-size: 40px;
+    left: 50%;
+    transform: translateX(-50%);
+    top: 35%;
+    text-shadow: 0 0 8px black;
+}
+
+.container {
+    max-width: 800px;
+    width: 100%;
+    margin: auto;
+}
+
+.post {
+    margin: 5px;
+    position: relative;
+    display: flex;
+    height: 400px;
+    box-shadow: 0 0 5px black;
+}
+
+    .post img {
+        width: 100%;
+        object-fit: cover;
+    }
+
+.post-body {
+    margin: -5px 5px 0;
+    padding: 20px 5px;
+    background-color: white;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+}
+
+.no-shadow {
+    box-shadow: none;
 }
